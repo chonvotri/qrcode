@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="vi" class="wusteam.com">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="description" content="Trình tạo mã QR dễ dàng. Tạo mã QR theo thời gian thực: 👉 điền nội dung, 👉 tạo mã QR và 👍 tải xuống!" />
+    <meta name="author" content="ThanhDieuTV">
+    <link rel="shortcut icon" href="./public/assets/img/logo.avif" type="image/x-icon">
+    <meta name="keywords" content="Trình tạo mã qr, mã qr miễn phí, tạo mã qr trực tuyến, mã vạch qr, mã qr miễn phí, trình tạo mã vạch" />
+    <title>Tạo Mã Qr | Tool Tạo QR-code Online</title>
+    <!-- font-awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- theme css -->
+    <link rel="stylesheet" href="./public/assets/css/theme.css">
+    <!-- style css -->
+    <link rel="stylesheet" href="./public/assets/css/style.css?v2">
+    <!-- cdn dialog -->
+    <link rel="stylesheet" href="//cdn.thanhdieu.com/dialog/wstoast/ws.toast.css">
+</head>
+<body class="nk-body npc-invest bg-lighter dark-mode"> <!-- Xoá class dark-mode nếu muốn về giao diện light -->
+    <!-- loader gif -->
+    <div class="loader" style="display:none;"><img src="./public/assets/img/loader.gif"></div>
+    <div class="nk-wrap">
+        <div class="nk-content nk-content-lg nk-content-fluid">
+            <!-- container @w -->
+            <div class="container-xl" id="app">
+                <div class="col-sm-12 center-block mt-5">
+                    <div class="card card-preview">
+                        <div class="card-inner">
+                            <div class="nya-title nk-ibx-action-item progress-rating">
+                                <span class="nk-menu-text font-weight-bold">Tạo Mã QR-Code Thời Gian Thực</span>
+                            </div>
+                    <div class="row">
+                        <div class="col-sm-12 col-md-8 mt-2">
+                            <div class="form-group">
+                                <label class="form-label">Nội Dung</label>
+                                <div class="form-control-wrap">
+                                    <textarea v-model="set.input" id="input" class="form-control" rows="5"></textarea>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6 col-md-4 mb-2">
+                                    <div class="form-group">
+                                        <label class="form-label">Kích Thước (Pixel)</label>
+                                        <div class="form-control-wrap">
+                                            <input type="number" v-model="set.width" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-6 col-md-4 mb-2">
+                                    <div class="form-group">
+                                        <label class="form-label">Kích Thước Lề (Pixel)</label>
+                                        <div class="form-control-wrap">
+                                            <input type="number" v-model="set.margin" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-6 col-md-4 mb-2">
+                                    <div class="form-group">
+                                        <label class="form-label">Kích Thước Tỉ Lệ (Pixel)</label>
+                                        <div class="form-control-wrap">
+                                            <input type="number" v-model="set.scale" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-6 col-md-4 mb-2">
+                                    <div class="form-group">
+                                        <label class="form-label">Mức Độ Nhiễu</label>
+                                        <div class="form-control-wrap">
+                                            <select class="form-control" v-model="set.errorCorrectionLevel">
+                                                <option>yếu</option>
+                                                <option>medium</option>
+                                                <option>quartile</option>
+                                                <option>high</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-6 col-md-4 mb-2">
+                                    <div class="form-group">
+                                        <label class="form-label">Màu Nội Dung（{{set.color.dark}}）</label>
+                                        <div class="form-control-wrap">
+                                            <input type="color" v-model="set.color.dark" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-6 col-md-4 mb-2">
+                                    <div class="form-group">
+                                        <label class="form-label">Màu Nền（{{set.color.light}}）</label>
+                                        <div class="form-control-wrap">
+                                            <input type="color" v-model="set.color.light" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row pt-3 pb-1">
+                                <div class="col-6">
+                                    <button class="btn btn-dim btn-outline-primary btn-block card-link" @click="generate">
+                                        <i class="fa fa-check"></i>&ensp;Tạo QR-code
+                                    </button>
+                                </div>
+                                <div class="col-6">
+                                    <button class="btn btn-dim btn-outline-primary btn-block card-link" @click="reset">
+                                        <i class="fa fa-refresh"></i>&ensp;Cài Lại
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-4">
+                            <div class="card-body text-center" v-show="set.output">
+                                <img class="mx-auto shadow" :src="set.output" id="qrcode"/>
+                                <button class="btn btn-outline-light mt-3" @click="download">
+                                    <i class="fa fa-download"></i>&ensp;Tải Xuống
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                        </div>
+                    </div>
+                </div>
+                </div>
+            </div>
+        <!-- content @d -->
+        <div class="nk-footer nk-footer-fluid bg-lighter">
+            <div class="container-xl">
+                <div class="nk-footer-wrap">
+                    <div class="nk-footer-copyright"> &copy; 2023 WusTeam.Com </div>
+                </div>
+            </div>
+        </div>
+        <!-- footer @e -->
+    </div>
+    <!-- wrap @e -->
+    <!-- jquery 3.6.0 -->
+    <script src="./public/assets/js/jquery-3.6.0.min.js"></script>
+    <!-- vue -->
+    <script src="//cdn.staticfile.org/vue/2.6.14/vue.min.js"></script>
+   <!-- cdn dialog -->
+    <script src="//cdn.thanhdieu.com/dialog/wstoast/ws.toast.js"></script>
+    <!-- boostrap js -->
+    <script src="//cdn.staticfile.org/bootstrap/4.6.1/js/bootstrap.bundle.min.js"></script>
+    <!-- qr-code -->
+    <script src="https://unpkg.com/qrcode@1.5.0/build/qrcode.js"></script>
+    <!-- index js -->
+    <script src="./public/assets/js/index.js"></script>
+</body>
+</html>
